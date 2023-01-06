@@ -1,0 +1,16 @@
+{
+  "listPriceResponse": [
+    {
+      "SECID": "GAZP",
+      "LAST": 161.23,
+      "LOW": 160.71,
+      "HIGH": 162.85
+    },
+    {
+      "SECID": "SBER",
+      "LAST": 141.12,
+      "LOW": 140.54,
+      "HIGH": 141.75
+    }
+  ]
+}

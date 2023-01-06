@@ -1,0 +1,4 @@
+---
+stock:
+  endpoint:
+    moexBase: http://localhost:9999
