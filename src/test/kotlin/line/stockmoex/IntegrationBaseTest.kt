@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.MappingBuilder
 import com.github.tomakehurst.wiremock.client.WireMock
+import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.matching.EqualToJsonPattern
 import com.github.tomakehurst.wiremock.matching.RequestPatternBuilder
 import line.stockmoex.properties.EndpointProperties
@@ -82,6 +83,10 @@ class IntegrationBaseTest {
                 .withRequestBody(EqualToJsonPattern(objectMapper.valueToTree(obj), true, true))
                 .withUrl(url)
         )
+    }
+
+    fun assertWireMockRequestNoObject(url: String) {
+        wireMockServer.verify(1, getRequestedFor(urlEqualTo(url)));
     }
 
     //базовый конфиг мока

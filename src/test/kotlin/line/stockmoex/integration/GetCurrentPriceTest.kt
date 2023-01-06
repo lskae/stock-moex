@@ -1,18 +1,20 @@
 package line.stockmoex.integration
 
-import com.fasterxml.jackson.core.type.TypeReference
 import line.stockmoex.IntegrationBaseTest
 import line.stockmoex.model.CurrentPriceResponse
 import line.stockmoex.model.TickerRequest
 import line.stockmoex.model.moex.MoexMarketDataResponse
 import org.apache.commons.io.FileUtils
 import org.json.JSONArray
-import org.json.JSONObject
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.skyscreamer.jsonassert.JSONAssert
+import org.springframework.core.ParameterizedTypeReference
+import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus.OK
+import org.springframework.http.RequestEntity
 import org.springframework.util.ResourceUtils
+import java.net.URI
 
 class GetCurrentPriceTest : IntegrationBaseTest() {
 
@@ -25,33 +27,29 @@ class GetCurrentPriceTest : IntegrationBaseTest() {
         //мок для внешнего сервиса
         getWireMockStubGet(endpoints.moexCurrentPrice, moexMarketDataResponse, OK)
 
+        val requestEntity = RequestEntity<Any>(tickerRequest, HttpMethod.POST, URI.create(baseUrl + getCurrentPriceUrl))
+
         //запуск интеграционного теста
-        val responseEntity = testRestTemplate.postForEntity(
-            baseUrl + getCurrentPriceUrl,
-            tickerRequest,
-            CurrentPriceResponse::class.java)
+        val responseEntity = testRestTemplate.exchange(
+            requestEntity,
+            object : ParameterizedTypeReference<List<CurrentPriceResponse>>() {})
 
         //тесты с полученными данными
         assertEquals(OK, responseEntity.statusCode)
         val actualCurrentPriceResponse = responseEntity.body
         assertNotNull(actualCurrentPriceResponse)
 
-        val actual = JSONObject(objectMapper.writeValueAsString(actualCurrentPriceResponse))
+        val actual = JSONArray(objectMapper.writeValueAsString(actualCurrentPriceResponse))
         val expected = getExpectedResponse()
         JSONAssert.assertEquals(expected, actual, true)
 
-        //проверяем состояние реквеста
-        //assertWireMockRequest(endpoints.adapterBase + endpoints.getCurrentPrice, tickerRequest)
+        //проверяем состояние и количество реквестов к мосбирже,
+        assertWireMockRequestNoObject(endpoints.moexCurrentPrice)
     }
 
-    private fun getExpectedResponse(): JSONObject {
+    private fun getExpectedResponse(): JSONArray {
         val file = ResourceUtils.getFile("classpath:controller/current/currentPriceResponse.json")
-        return JSONObject(FileUtils.readFileToString(file, "UTF-8"))
-    }
-
-    private fun getCurrentPriceResponse(): CurrentPriceResponse {
-        val file = ResourceUtils.getFile("classpath:controller/current/currentPriceResponse.json")
-        return objectMapper.readValue(file, CurrentPriceResponse::class.java)
+        return JSONArray(FileUtils.readFileToString(file, "UTF-8"))
     }
 
     private fun getMoexMarketDataResponse(): MoexMarketDataResponse {

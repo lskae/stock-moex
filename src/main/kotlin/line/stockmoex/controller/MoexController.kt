@@ -16,10 +16,9 @@ class MoexController(
     //метод получения цен в реальном времени (мониторинг)
     @PostMapping(path = ["\${stock.endpoint.getCurrentPrice}"])
     @ResponseBody
-    fun getCurrentPrice(@RequestBody tickerRequest: TickerRequest): CurrentPriceResponse {
+    fun getCurrentPrice(@RequestBody tickerRequest: TickerRequest): List<CurrentPriceResponse> {
         return stockService.getCurrentPrice(tickerRequest)
     }
-
 
     //метод получения закэшированной информации по акциям
     @PostMapping(path = ["\${stock.endpoint.getLastDayPrice}"])

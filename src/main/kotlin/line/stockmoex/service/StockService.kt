@@ -1,13 +1,11 @@
 package line.stockmoex.service
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import line.stockmoex.mapper.MoexMapper
 import line.stockmoex.model.CurrentPriceResponse
 import line.stockmoex.model.LastDayPriceResponse
 import line.stockmoex.model.TickerRequest
 import line.stockmoex.moex.MoexClient
 import org.slf4j.LoggerFactory
-import org.springframework.cache.CacheManager
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
 
@@ -18,7 +16,7 @@ class StockService(
 ) {
     private val log = LoggerFactory.getLogger(javaClass)
 
-    fun getCurrentPrice(tickerRequest: TickerRequest): CurrentPriceResponse {
+    fun getCurrentPrice(tickerRequest: TickerRequest): List<CurrentPriceResponse> {
         val moexResponse = moexClient.getCurrentPrice()
         return moexMapper.getMoexCurrentPrice(moexResponse, tickerRequest)
     }

@@ -10,6 +10,5 @@ import org.springframework.validation.annotation.Validated
 class EndpointProperties {
     lateinit var adapterBase: String
     lateinit var getCurrentPrice: String
-    lateinit var moexBase: String
     lateinit var moexCurrentPrice: String
 }

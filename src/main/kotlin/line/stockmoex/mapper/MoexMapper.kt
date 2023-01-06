@@ -2,7 +2,6 @@ package line.stockmoex.mapper
 
 import line.stockmoex.model.CurrentPriceResponse
 import line.stockmoex.model.LastDayPriceResponse
-import line.stockmoex.model.PriceResponse
 import line.stockmoex.model.TickerRequest
 import line.stockmoex.model.moex.MoexMarketDataResponse
 import line.stockmoex.model.moex.MoexSecuritiesResponse
@@ -13,20 +12,18 @@ class MoexMapper {
     fun getMoexCurrentPrice(
         moexMarketDataResponse: MoexMarketDataResponse,
         tickerRequest: TickerRequest,
-    ): CurrentPriceResponse {
+    ): List<CurrentPriceResponse> {
         val columns = moexMarketDataResponse.marketData.columns
-        val listPriceResponse = moexMarketDataResponse.marketData.data
+        return moexMarketDataResponse.marketData.data
             .filter { a -> a.any { it in tickerRequest.tickerList } }
             .map { v ->
-                PriceResponse(
+                CurrentPriceResponse(
                     secid = v[columns.indexOf("SECID")] as String,
                     low = v[columns.indexOf("LOW")] as Number,
                     last = v[columns.indexOf("LAST")] as Number,
                     high = v[columns.indexOf("HIGH")] as Number)
             }
-        return CurrentPriceResponse(listPriceResponse = listPriceResponse)
     }
-
 
     fun getLastDatPrice(
         moexSecuritiesResponse: MoexSecuritiesResponse,
