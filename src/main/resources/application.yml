@@ -1,10 +1,26 @@
 spring:
+  application:
+    name: stock-moex
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/stock
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate.ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQL92Dialect
+    open-in-view: false
+  liquibase:
+    enabled: true
+    change-log: liquibase/master-changelog.xml
   jackson:
     serialization:
       indent-output: true
   cache:
     caffeine:
-      spec: maximumSize=100,expireAfterAccess=1m
+      spec: maximumSize=100,expireAfterAccess=24h
 
 server:
   port: 8081
@@ -23,6 +39,7 @@ stock:
     moexBase: https://iss.moex.com/iss
     moexCurrentPrice: /engines/stock/markets/shares/boards/TQBR/securities.json?iss.meta=off&iss.only=marketdata
     moexLastDayPrice: /engines/stock/markets/shares/boards/TQBR/securities.json?iss.meta=off&iss.only=securities
+    saveStatistic: /saveStatistic
 
 logging:
   level:
@@ -40,3 +57,16 @@ feign:
       moex-client:
         connectTimeout: 2000
         readTimeout: 7000
+#
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: health,prometheus
+#  metrics:
+#    export:
+#      prometheus:
+#        enabled: true
+#    distribution:
+#      percentiles-histogram:
+#        "[http.server.requests]": true

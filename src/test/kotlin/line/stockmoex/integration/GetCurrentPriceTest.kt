@@ -6,7 +6,8 @@ import line.stockmoex.model.TickerRequest
 import line.stockmoex.model.moex.MoexMarketDataResponse
 import org.apache.commons.io.FileUtils
 import org.json.JSONArray
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test
 import org.skyscreamer.jsonassert.JSONAssert
 import org.springframework.core.ParameterizedTypeReference
@@ -52,19 +53,15 @@ class GetCurrentPriceTest : IntegrationBaseTest() {
         return JSONArray(FileUtils.readFileToString(file, "UTF-8"))
     }
 
-    private fun getMoexMarketDataResponse(): MoexMarketDataResponse {
-        val file = ResourceUtils.getFile("classpath:controller/current/moexMarketDataResponse.json")
-        return objectMapper.readValue(file, MoexMarketDataResponse::class.java)
-    }
+    private fun getMoexMarketDataResponse() =
+        getClassFromFile("classpath:controller/current/moexMarketDataResponse.json", MoexMarketDataResponse::class.java)
 
-    private fun getTickerRequest(): TickerRequest {
-        val file = ResourceUtils.getFile("classpath:controller/current/tickerRequest.json")
-        return objectMapper.readValue(file, TickerRequest::class.java)
-    }
+    private fun getTickerRequest() =
+        getClassFromFile("classpath:controller/current/tickerRequest.json", TickerRequest::class.java)
 
-    private fun getClassFromFile(pathToFile: String): Any {
+    private fun <T> getClassFromFile(pathToFile: String, clas: Class<T>): T {
         val file = ResourceUtils.getFile(pathToFile)
-        return objectMapper.readValue(file, Any::class.java)
+        return objectMapper.readValue(file, clas)
     }
 
 

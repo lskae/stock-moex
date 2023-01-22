@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component
 
 @Component
 class MoexMapper {
+
     fun getMoexCurrentPrice(
         moexMarketDataResponse: MoexMarketDataResponse,
         tickerRequest: TickerRequest,
