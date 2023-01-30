@@ -6,9 +6,9 @@ data class CurrentPriceResponse(
     @JsonProperty("SECID")
     val secid: String,
     @JsonProperty("LAST")
-    val last: Number?,
+    val last: String?,
     @JsonProperty("LOW")
-    val low: Number?,
+    val low: String?,
     @JsonProperty("HIGH")
-    val high: Number?,
+    val high: String?,
 )

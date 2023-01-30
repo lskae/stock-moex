@@ -11,7 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.junit.jupiter.MockitoExtension
 import org.springframework.util.ResourceUtils
 
-private const val LAST = 161.23
+private const val LAST = "161.23"
 
 @ExtendWith(MockitoExtension::class)
 class GetCurrentPriceMapperTest {

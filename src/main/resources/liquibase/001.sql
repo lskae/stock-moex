@@ -3,8 +3,8 @@
 -- changeset liquibase:1
 CREATE TABLE statistic_request
 (
-    id    varchar(255) primary key,
+    id    uuid primary key            not null,
     date  timestamp with time zone not null,
-    secid varchar(255)             not null,
-    price decimal                  not null
+    secid varchar(255)                not null,
+    price varchar(255)
 );

@@ -1,5 +1,6 @@
 package line.stockmoex.mapper
 
+import line.stockmoex.exception.NotValidTickerRequestException
 import line.stockmoex.model.CurrentPriceResponse
 import line.stockmoex.model.LastDayPriceResponse
 import line.stockmoex.model.TickerRequest
@@ -15,14 +16,19 @@ class MoexMapper {
         tickerRequest: TickerRequest,
     ): List<CurrentPriceResponse> {
         val columns = moexMarketDataResponse.marketData.columns
-        return moexMarketDataResponse.marketData.data
+        val listData = moexMarketDataResponse.marketData.data
             .filter { a -> a.any { it in tickerRequest.tickerList } }
+
+        if (listData.isEmpty()) {
+            throw NotValidTickerRequestException("Запрос не содержит тикеров, которые торгуются на московской бирже")
+        }
+        return listData
             .map { v ->
                 CurrentPriceResponse(
-                    secid = v[columns.indexOf("SECID")] as String,
-                    low = v[columns.indexOf("LOW")] as Number,
-                    last = v[columns.indexOf("LAST")] as Number,
-                    high = v[columns.indexOf("HIGH")] as Number)
+                    secid = v[columns.indexOf("SECID")].toString(),
+                    low = v[columns.indexOf("LOW")].toString(),
+                    last = v[columns.indexOf("LAST")].toString(),
+                    high = v[columns.indexOf("HIGH")].toString())
             }
     }
 
@@ -35,9 +41,9 @@ class MoexMapper {
             .filter { a -> a.any { it in tickerRequest.tickerList } }
             .map { v ->
                 LastDayPriceResponse(
-                    secid = v[columns.indexOf("SECID")] as String,
-                    shortName = v[columns.indexOf("SHORTNAME")] as String,
-                    prevAdmitTedQuote = v[columns.indexOf("PREVADMITTEDQUOTE")] as Number)
+                    secid = v[columns.indexOf("SECID")].toString(),
+                    shortName = v[columns.indexOf("SHORTNAME")].toString(),
+                    prevAdmitTedQuote = v[columns.indexOf("PREVADMITTEDQUOTE")].toString())
             }
     }
 }

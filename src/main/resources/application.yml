@@ -23,7 +23,7 @@ spring:
       spec: maximumSize=100,expireAfterAccess=24h
 
 server:
-  port: 8081
+  port: 8080
   servlet:
     context-path: /stock-moex-app-api
     encoding:
@@ -39,8 +39,7 @@ stock:
     moexBase: https://iss.moex.com/iss
     moexCurrentPrice: /engines/stock/markets/shares/boards/TQBR/securities.json?iss.meta=off&iss.only=marketdata
     moexLastDayPrice: /engines/stock/markets/shares/boards/TQBR/securities.json?iss.meta=off&iss.only=securities
-    saveStatistic: /saveStatistic
-
+    getTimeStatistic: /getTimeStatistic
 logging:
   level:
     #   root: INFO
@@ -57,16 +56,16 @@ feign:
       moex-client:
         connectTimeout: 2000
         readTimeout: 7000
-#
-#management:
-#  endpoints:
-#    web:
-#      exposure:
-#        include: health,prometheus
-#  metrics:
-#    export:
-#      prometheus:
-#        enabled: true
-#    distribution:
-#      percentiles-histogram:
-#        "[http.server.requests]": true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+    distribution:
+      percentiles-histogram:
+        "[http.server.requests]": true

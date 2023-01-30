@@ -1,5 +1,6 @@
 package line.stockmoex.moex
 
+import io.micrometer.core.annotation.Timed
 import line.stockmoex.model.moex.MoexMarketDataResponse
 import line.stockmoex.model.moex.MoexSecuritiesResponse
 import line.stockmoex.moex.config.MoexClientConfig
@@ -13,6 +14,7 @@ interface MoexClient {
 
     @GetMapping(path = ["\${stock.endpoint.moexCurrentPrice}"])
     @ResponseBody
+    @Timed(value = "metric1RequestToMoex") // время выполнения запроса к апи московской биржи
     fun getCurrentPrice(): MoexMarketDataResponse
 
     @GetMapping(path = ["\${stock.endpoint.moexLastDayPrice}"])

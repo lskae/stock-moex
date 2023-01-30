@@ -8,6 +8,7 @@ plugins {
     id("org.jetbrains.kotlin.jvm") version "1.8.0"
     id("org.jetbrains.kotlin.plugin.spring") version "1.8.0"
     id("org.jetbrains.kotlin.plugin.jpa") version "1.8.0"
+    id("io.gitlab.arturbosch.detekt") version "1.22.0"
 
     id("maven-publish")
     id("jacoco")
@@ -51,10 +52,10 @@ dependencies {
     implementation("io.micrometer:micrometer-registry-prometheus")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-
     implementation("javax.persistence:javax.persistence-api:2.2")
-    runtimeOnly("org.springframework.boot:spring-boot-starter-data-rest:2.6.2")
     implementation("org.postgresql:postgresql:42.5.1")
+    implementation("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.22.0")
+
     implementation ("org.liquibase:liquibase-core:4.7.1")
 
     liquibaseRuntime ("org.liquibase:liquibase-core:4.7.1")
@@ -62,6 +63,8 @@ dependencies {
     liquibaseRuntime ("org.liquibase:liquibase-groovy-dsl:3.0.2")
     liquibaseRuntime ("info.picocli:picocli:4.6.2")
     testImplementation("org.liquibase:liquibase-core:4.7.1")
+
+    runtimeOnly("org.springframework.boot:spring-boot-starter-data-rest:2.6.2")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("com.github.tomakehurst:wiremock-jre8")
@@ -103,12 +106,12 @@ liquibase {
     activities.register("main") {
         this.arguments = mapOf(
             "logLevel" to "info",
-            "changeLogFile" to "src/main/resources/db.changelog.xml",
-            "url" to "jdbc:postgresql://localhost/dbName",
+            "changeLogFile" to "src/main/resources/liquibase/master-changelog.xml",
+            "url" to "jdbc:postgresql://localhost/stock",
             "username" to "userName",
             "password" to "secret")
     }
-//    runList = "main"
+    runList = "main"
 }
 
 tasks.register("dev") {
@@ -116,6 +119,7 @@ tasks.register("dev") {
     dependsOn("update")
 }
 
+//сборка jar
 publishing {
     publications {
         register("mavenJava", MavenPublication::class) {
@@ -127,3 +131,8 @@ publishing {
     }
 }
 
+tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
+    reports {
+        html.required.set(true) // observe findings in your browser with structure and code snippets
+    }
+}

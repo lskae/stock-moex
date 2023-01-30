@@ -8,5 +8,5 @@ data class LastDayPriceResponse(
     @JsonProperty("SHORTNAME")
     val shortName: String?,
     @JsonProperty("PREVADMITTEDQUOTE")
-    val prevAdmitTedQuote: Number?,
+    val prevAdmitTedQuote: String?,
 )

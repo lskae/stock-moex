@@ -20,7 +20,7 @@ import java.net.URI
 class GetCurrentPriceTest : IntegrationBaseTest() {
 
     @Test
-    fun getCurrentPriceTest() {
+    fun getCurrentPriceSuccessTest() {
         val getCurrentPriceUrl = "/v1/getCurrentPrice"
         val tickerRequest = getTickerRequest()
         val moexMarketDataResponse = getMoexMarketDataResponse()
@@ -63,6 +63,4 @@ class GetCurrentPriceTest : IntegrationBaseTest() {
         val file = ResourceUtils.getFile(pathToFile)
         return objectMapper.readValue(file, clas)
     }
-
-
 }

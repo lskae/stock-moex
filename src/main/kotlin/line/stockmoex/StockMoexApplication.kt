@@ -10,12 +10,10 @@ import org.springframework.scheduling.annotation.EnableScheduling
 @EnableFeignClients
 @EnableScheduling
 @EnableCaching
-//@SpringBootApplication(exclude = [DataSourceAutoConfiguration::class, RepositoryRestMvcAutoConfiguration::class])
-//@SpringBootApplication(exclude = [DataSourceAutoConfiguration::class])
 @EnableJpaRepositories(basePackages = ["line.stockmoex"])
 @SpringBootApplication
 class StockMoexApplication
 
-fun main(args: Array<String>) {
+fun main(vararg args: String) {
     runApplication<StockMoexApplication>(*args)
 }
