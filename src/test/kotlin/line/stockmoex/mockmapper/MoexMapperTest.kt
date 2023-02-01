@@ -32,8 +32,6 @@ class GetCurrentPriceMapperTest {
         return TickerRequest(tickerList = listOf("GAZP", "SBER"))
     }
 
-    //В тестах на моках вроде как принято создавать объект "вручную", как TickerRequest выше на 31 строке,
-    //но MoexMarketDataResponse большой, поэтому мне стало лень
     private fun getMoexMarketDataResponse(): MoexMarketDataResponse {
         val objectMapper = ObjectMapper()
         val file = ResourceUtils.getFile("classpath:controller/current/moexMarketDataResponse.json")

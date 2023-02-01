@@ -21,17 +21,23 @@ import org.springframework.http.MediaType
 import org.springframework.test.context.ActiveProfiles
 import javax.servlet.ServletContext
 
-//Базовый класс для интеграционных тестов
+/**
+ * Базовый класс для интеграционных тестов
+ */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 @AutoConfigureMetrics
 class IntegrationBaseTest {
 
-    //servlet: context-path
+    /**
+     * servlet: context-path
+     */
     @Autowired
     lateinit var context: ServletContext
 
-    //кастомный бин wireMockServer
+    /**
+     * Кастомный бин wireMockServer
+     */
     @Autowired
     lateinit var wireMockServer: WireMockServer
 

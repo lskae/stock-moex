@@ -24,7 +24,9 @@ class StockService(
 ) {
     private var value: AtomicInteger = AtomicInteger()
 
-    //кастомная метрика для максимальной цены
+    /**
+     * Инициализация кастомная метрика для максимальной цены
+     */
     init {
         meterRegistry.gauge("metricCustomMaxPrice", value)
     }
@@ -33,16 +35,23 @@ class StockService(
         val moexResponse = moexClient.getCurrentPrice()
         val listCurrentPrice = moexMapper.getMoexCurrentPrice(moexResponse, tickerRequest)
 
-        //кастомная метрика для максимальной цены
+        /**
+         * Подсчет значения для кастомной метрики для максимальной цены по определенному тикеру
+         */
         getCustomMetricForMaxValue(listCurrentPrice)
 
-        //сохраним статистику для прометеуса
+        /**
+         * Cохранение статистики для прометеуса
+         */
         val listStatisticRequest = listCurrentPrice.map { a -> getStatisticRequest(a) }
         statisticRequestRepository.saveAll(listStatisticRequest)
 
         return listCurrentPrice
     }
 
+    /**
+     * Использование кэша
+     */
     @Cacheable(value = ["stable"])
     fun getLastDatPrice(tickerRequest: TickerRequest): List<LastDayPriceResponse> {
         val moexResponse = moexClient.getLastDayPrice()

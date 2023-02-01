@@ -57,11 +57,28 @@ feign:
         connectTimeout: 2000
         readTimeout: 7000
 
+springdoc:
+  swagger-ui:
+    path: /
+    enabled: true
+    display-request-duration: true
+    groups-order: DESC
+    operationsSorter: method
+    disable-swagger-default-url: true
+  api-docs:
+    enabled: true
+  packages-to-scan: line.stockmoex
+
 management:
   endpoints:
     web:
       exposure:
-        include: health,prometheus
+        include: health, info, metrics, businessMetrics, prometheus
+  endpoint:
+    health:
+      show-details: ALWAYS
+      probes:
+        enabled: true
   metrics:
     export:
       prometheus:

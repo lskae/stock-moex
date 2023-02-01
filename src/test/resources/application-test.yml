@@ -2,3 +2,17 @@
 stock:
   endpoint:
     moexBase: http://localhost:9999
+spring:
+  datasource:
+    epfb2c-arm-confirmation:
+      jdbc-url: 'jdbc:postgresql://localhost:5432/stock'
+      username: postgres
+      password: postgres
+      driverClassName: org.postgresql.Driver
+  jpa:
+    hibernate.ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQL92Dialect
+  liquibase:
+    enabled: true

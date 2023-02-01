@@ -21,7 +21,7 @@ class ControllerAdvice {
     @ExceptionHandler(NotValidTickerRequestException::class)
     fun handle(e: NotValidTickerRequestException): ResponseEntity<ErrorInfo> {
         log.error("Запрос содержит некорректное наименование тикеров", e)
-        val body = ErrorInfo (message = "Ошибка обращения к приложению StockMoex", code = "1")
+        val body = ErrorInfo(message = "Ошибка обращения к приложению StockMoex", code = "1")
         return ResponseEntity(body, HttpStatus.BAD_REQUEST)
     }
 }

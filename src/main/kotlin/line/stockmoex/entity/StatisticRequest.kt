@@ -1,10 +1,10 @@
 package line.stockmoex.entity
 
 import com.fasterxml.jackson.annotation.JsonFormat
+import com.fasterxml.jackson.annotation.JsonFormat.Feature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE
 import io.swagger.v3.oas.annotations.media.Schema
 import org.hibernate.annotations.CreationTimestamp
 import org.springframework.format.annotation.DateTimeFormat
-import java.time.LocalDateTime
 import java.time.ZonedDateTime
 import java.util.*
 import javax.persistence.Column
@@ -19,11 +19,11 @@ class StatisticRequest(
     @Column(name = "id", nullable = false, updatable = false)
     val id: UUID,
 
-//    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
-//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ",
-//        //without = [ADJUST_DATES_TO_CONTEXT_TIME_ZONE]
-//        )
-//    @Schema(description = "Дата запроса", example = "2022-03-22T12:10:18.789+0000")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ",
+        without = [ADJUST_DATES_TO_CONTEXT_TIME_ZONE]
+        )
+    @Schema(description = "Дата запроса", example = "2022-03-22T12:10:18.789+0000")
     @CreationTimestamp
     @Column(name = "date", nullable = false, updatable = false)
     val date: ZonedDateTime = ZonedDateTime.now(),
