@@ -5,11 +5,12 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.info.Info
 import io.swagger.v3.oas.annotations.tags.Tag
 import line.stockmoex.entity.StatisticRequest
-import line.stockmoex.model.CurrentPriceResponse
-import line.stockmoex.model.LastDayPriceResponse
+import line.stockmoex.model.LastDayPriceInfoResponse
 import line.stockmoex.model.TickerRequest
+import line.stockmoex.model.current.CurrentPriceInfoResponse
 import org.springframework.http.MediaType
 import org.springframework.validation.annotation.Validated
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -39,7 +40,7 @@ interface MoexApiController {
         requestBody = RequestBodySwagger(description = "Лист тикеров акций по которым необходимо получить информацию")
     )
     @ResponsesAndHeader
-    fun getCurrentPrice(@RequestBody tickerRequest: TickerRequest): List<CurrentPriceResponse>
+    fun getCurrentPrice(@RequestBody tickerRequest: TickerRequest): CurrentPriceInfoResponse
 
     @PostMapping(path = ["\${stock.endpoint.getLastDayPrice}"])
     @ResponseBody
@@ -49,9 +50,9 @@ interface MoexApiController {
         requestBody = RequestBodySwagger(description = "Лист тикеров акций по которым необходимо получить информацию")
     )
     @ResponsesAndHeader
-    fun getLastDayPrice(@RequestBody tickerRequest: TickerRequest): List<LastDayPriceResponse>
+    fun getLastDayPrice(@RequestBody tickerRequest: TickerRequest): LastDayPriceInfoResponse
 
-    @PostMapping(path = ["\${stock.endpoint.getTimeStatistic}"])
+    @GetMapping(path = ["\${stock.endpoint.getTimeStatistic}"])
     @ResponseBody
     @Operation(
         summary = "Получение статистики запросов за последний торговый день",

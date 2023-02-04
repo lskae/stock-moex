@@ -1,0 +1,343 @@
+---
+openapi: 3.0.1
+info:
+  title: stock-moex
+  description: Адаптер для работы с API Московской биржи»
+  version: 1.0.0
+servers:
+- url: http://localhost:8080/stock-moex-app-api
+  description: Generated server url
+tags:
+- name: stock-moex-v1
+  description: Адаптер для работы с API Московской биржи
+paths:
+  /v1/getLastDayPrice:
+    post:
+      tags:
+      - stock-moex-v1
+      summary: Получение кэшированной информации по котировкам акций за предыдущий
+        день
+      description: "Получение кэшированной информации по котировкам акций за преды\
+        дущий день, параметр SECURITIES"
+      operationId: getLastDayPrice
+      parameters:
+      - name: RqUID
+        in: header
+        description: Уникальный идентификатор запроса. Используется для сквозной трассировки
+          запросов. Способ генерации - UUID
+        required: true
+        schema:
+          type: string
+          example: b788d7ea-d511-11ec-9d64-0242ac120002
+      requestBody:
+        description: Лист тикеров акций по которым необходимо получить информацию
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TickerRequest'
+        required: true
+      responses:
+        "400":
+          description: Bad Request
+          headers:
+            RqUID:
+              description: Уникальный идентификатор запроса. Используется для сквозной
+                трассировки запросов. Способ генерации - UUID
+              required: true
+              style: simple
+              schema:
+                type: string
+                example: b788d7ea-d511-11ec-9d64-0242ac120002
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "500":
+          description: Internal Server Error
+          headers:
+            RqUID:
+              description: Уникальный идентификатор запроса. Используется для сквозной
+                трассировки запросов. Способ генерации - UUID
+              required: true
+              style: simple
+              schema:
+                type: string
+                example: b788d7ea-d511-11ec-9d64-0242ac120002
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "200":
+          description: OK
+          headers:
+            RqUID:
+              description: Уникальный идентификатор запроса. Используется для сквозной
+                трассировки запросов. Способ генерации - UUID
+              required: true
+              style: simple
+              schema:
+                type: string
+                example: b788d7ea-d511-11ec-9d64-0242ac120002
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LastDayPriceInfoResponse'
+  /v1/getCurrentPrice:
+    post:
+      tags:
+      - stock-moex-v1
+      summary: Получение информации по котировкам акций в режиме реального времени
+      description: Получение информации по котировкам акций в режиме реального времени
+        (параметр MARKETDATA)
+      operationId: getCurrentPrice
+      parameters:
+      - name: RqUID
+        in: header
+        description: Уникальный идентификатор запроса. Используется для сквозной трассировки
+          запросов. Способ генерации - UUID
+        required: true
+        schema:
+          type: string
+          example: b788d7ea-d511-11ec-9d64-0242ac120002
+      requestBody:
+        description: Лист тикеров акций по которым необходимо получить информацию
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TickerRequest'
+        required: true
+      responses:
+        "400":
+          description: Bad Request
+          headers:
+            RqUID:
+              description: Уникальный идентификатор запроса. Используется для сквозной
+                трассировки запросов. Способ генерации - UUID
+              required: true
+              style: simple
+              schema:
+                type: string
+                example: b788d7ea-d511-11ec-9d64-0242ac120002
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "500":
+          description: Internal Server Error
+          headers:
+            RqUID:
+              description: Уникальный идентификатор запроса. Используется для сквозной
+                трассировки запросов. Способ генерации - UUID
+              required: true
+              style: simple
+              schema:
+                type: string
+                example: b788d7ea-d511-11ec-9d64-0242ac120002
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "200":
+          description: OK
+          headers:
+            RqUID:
+              description: Уникальный идентификатор запроса. Используется для сквозной
+                трассировки запросов. Способ генерации - UUID
+              required: true
+              style: simple
+              schema:
+                type: string
+                example: b788d7ea-d511-11ec-9d64-0242ac120002
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CurrentPriceInfoResponse'
+  /v1/getTimeStatistic:
+    get:
+      tags:
+      - stock-moex-v1
+      summary: Получение статистики запросов за последний торговый день
+      description: "Получение статистики запросов за последний торговый день, для\
+        \ учета метрик мониторинга"
+      operationId: getTimeStatistic
+      parameters:
+      - name: RqUID
+        in: header
+        description: Уникальный идентификатор запроса. Используется для сквозной трассировки
+          запросов. Способ генерации - UUID
+        required: true
+        schema:
+          type: string
+          example: b788d7ea-d511-11ec-9d64-0242ac120002
+      responses:
+        "400":
+          description: Bad Request
+          headers:
+            RqUID:
+              description: Уникальный идентификатор запроса. Используется для сквозной
+                трассировки запросов. Способ генерации - UUID
+              required: true
+              style: simple
+              schema:
+                type: string
+                example: b788d7ea-d511-11ec-9d64-0242ac120002
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "500":
+          description: Internal Server Error
+          headers:
+            RqUID:
+              description: Уникальный идентификатор запроса. Используется для сквозной
+                трассировки запросов. Способ генерации - UUID
+              required: true
+              style: simple
+              schema:
+                type: string
+                example: b788d7ea-d511-11ec-9d64-0242ac120002
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "200":
+          description: OK
+          headers:
+            RqUID:
+              description: Уникальный идентификатор запроса. Используется для сквозной
+                трассировки запросов. Способ генерации - UUID
+              required: true
+              style: simple
+              schema:
+                type: string
+                example: b788d7ea-d511-11ec-9d64-0242ac120002
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StatisticRequest'
+components:
+  schemas:
+    TickerRequest:
+      type: object
+      properties:
+        tickerList:
+          type: array
+          description: Список тикеров
+          example: "SBER, GAZP"
+          items:
+            type: string
+            description: Список тикеров
+            example: "SBER, GAZP"
+      description: Запрос со списком тикеров
+    Error:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+          description: Код ошибки
+          example: 1
+        message:
+          type: string
+          description: Сообщение об ошибке
+          example: Что-то пошло не так
+      description: Информация об ошибке
+    LastDayPriceInfo:
+      type: object
+      properties:
+        SECID:
+          type: string
+          writeOnly: true
+        SHORTNAME:
+          type: string
+          writeOnly: true
+        PREVLEGALCLOSEPRICE:
+          type: string
+          writeOnly: true
+        secid:
+          type: string
+          description: SECID
+          example: SBER
+        shortName:
+          type: string
+          description: Обозначение тикера
+          example: Сбербанк
+        prevLegalClosePrice:
+          type: string
+          description: Цена закрытия предыдущего торгового дня
+          example: 156.4
+      description: Ответ на запрос о получении кэшированной информации по котировкам
+        акций за предыдущий день
+    LastDayPriceInfoResponse:
+      type: object
+      properties:
+        lastDayPriceInfo:
+          type: array
+          description: Лист LastDayPriceInfo
+          items:
+            $ref: '#/components/schemas/LastDayPriceInfo'
+      description: Лист LastDayPriceInfoResponse
+    CurrentPriceInfo:
+      type: object
+      properties:
+        SECID:
+          type: string
+          writeOnly: true
+        LAST:
+          type: string
+          writeOnly: true
+        LOW:
+          type: string
+          writeOnly: true
+        HIGH:
+          type: string
+          writeOnly: true
+        secid:
+          type: string
+          description: SECID
+          example: SBER
+        last:
+          type: string
+          description: Текущая цена на торгах
+          example: 200.2
+        low:
+          type: string
+          description: Низшая цена за текущий торговый день
+          example: 199.2
+        high:
+          type: string
+          description: Высокая цена за текущий торговый день
+          example: 202.2
+      description: Объект ответа на запрос о получении информации по котировкам акций
+        в режиме реального времени
+    CurrentPriceInfoResponse:
+      type: object
+      properties:
+        currentInfoResponse:
+          type: array
+          writeOnly: true
+          items:
+            $ref: '#/components/schemas/CurrentPriceInfo'
+        currentPriceInfoResponse:
+          type: array
+          description: Лист CurrentPriceInfo
+          items:
+            $ref: '#/components/schemas/CurrentPriceInfo'
+      description: Лист CurrentPriceInfo
+    StatisticRequest:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        date:
+          type: string
+          format: date-time
+        secid:
+          type: string
+        price:
+          type: string

@@ -26,7 +26,7 @@ class StatisticRequest(
     @Schema(description = "Дата запроса", example = "2022-03-22T12:10:18.789+0000")
     @CreationTimestamp
     @Column(name = "date", nullable = false, updatable = false)
-    val date: ZonedDateTime = ZonedDateTime.now(),
+    val date: ZonedDateTime? = null,
 
     @Column(name = "secid", nullable = false, updatable = false)
     val secid: String,

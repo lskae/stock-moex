@@ -1,10 +1,10 @@
-package line.stockmoex.model
+package line.stockmoex.model.current
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import io.swagger.v3.oas.annotations.media.Schema
 
 @Schema(description = "Объект ответа на запрос о получении информации по котировкам акций в режиме реального времени")
-data class CurrentPriceResponse(
+data class CurrentPriceInfo(
 
     @field:Schema(description = "SECID", example = "SBER")
     @JsonProperty("SECID")

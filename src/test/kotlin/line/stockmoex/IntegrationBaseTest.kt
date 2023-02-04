@@ -8,6 +8,7 @@ import com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor
 import com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo
 import com.github.tomakehurst.wiremock.matching.EqualToJsonPattern
 import com.github.tomakehurst.wiremock.matching.RequestPatternBuilder
+import line.stockmoex.integration.StatisticRequestRepositoryTest
 import line.stockmoex.properties.EndpointProperties
 import org.junit.jupiter.api.BeforeEach
 import org.springframework.beans.factory.annotation.Autowired
@@ -50,6 +51,10 @@ class IntegrationBaseTest {
 
     @Autowired
     lateinit var objectMapper: ObjectMapper
+
+    //создадим тестовый репозиторий, где будет свобода создания и изменения данных для тестов
+    @Autowired
+    lateinit var statisticRequestRepositoryTest: StatisticRequestRepositoryTest
 
     var baseUrl: String? = null
 
@@ -112,4 +117,12 @@ class IntegrationBaseTest {
         }
         wireMockServer.stubFor(mappingBuilder.willReturn(builder))
     }
+
+    data class ParametersData(
+        val pathToTickerRequest: String,
+        val httpStatus: HttpStatus,
+        val typeOfResponse: Class<*>,
+        val pathToResponse: String
+    )
+
 }

@@ -11,4 +11,5 @@ class EndpointProperties {
     lateinit var adapterBase: String
     lateinit var getCurrentPrice: String
     lateinit var moexCurrentPrice: String
+    lateinit var moexLastDayPrice: String
 }

@@ -1,7 +1,7 @@
 package line.stockmoex.integration
 
 import line.stockmoex.IntegrationBaseTest
-import line.stockmoex.model.CurrentPriceResponse
+import line.stockmoex.model.current.CurrentPriceInfoResponse
 import line.stockmoex.model.ErrorInfo
 import line.stockmoex.model.TickerRequest
 import line.stockmoex.model.moex.MoexMarketDataResponse
@@ -15,64 +15,63 @@ import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 import org.skyscreamer.jsonassert.JSONAssert
 import org.springframework.core.ParameterizedTypeReference
-import org.springframework.http.HttpMethod
-import org.springframework.http.HttpStatus
 import org.springframework.http.HttpStatus.BAD_REQUEST
 import org.springframework.http.HttpStatus.OK
-import org.springframework.http.RequestEntity
 import org.springframework.util.ResourceUtils
-import java.net.URI
 import java.util.stream.Stream
 
+/**
+ * Интеграционный тест эндпоинта getCurrentPrice
+ */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class GetCurrentPriceTest : IntegrationBaseTest() {
-
+class GetCurrentPriceInfoTest : IntegrationBaseTest() {
 
     fun sourceParams(): Stream<Arguments> {
         return Stream.of(
             Arguments.of(
                 ParametersData(
-                    pathToTickerRequest = "classpath:controller/current/tickerRequest.json",
+                    pathToTickerRequest = "classpath:controller/tickerRequest.json",
                     httpStatus = OK,
-                    typeOfResponseClass = typeReference<List<CurrentPriceResponse>>(),
-                    pathToResponse = "classpath:controller/current/currentPriceResponse.json"
+                    typeOfResponse = CurrentPriceInfoResponse::class.java,
+                    pathToResponse = "classpath:controller/current/currentPriceInfoResponse.json"
                 )
             ),
             Arguments.of(
                 ParametersData(
-                    pathToTickerRequest = "classpath:controller/current/failTickerRequest.json",
+                    pathToTickerRequest = "classpath:controller/failTickerRequest.json",
                     httpStatus = BAD_REQUEST,
-                    typeOfResponseClass = typeReference<ErrorInfo>(),
-                    pathToResponse = "classpath:controller/current/errorInfo.json"
+                    typeOfResponse = ErrorInfo::class.java,
+                    pathToResponse = "classpath:controller/errorInfo.json"
                 )
             )
         )
     }
 
     /**
-     * Интеграционный тест эндпоинта getCurrentPrice
+     * Интеграционный тест эндпоинта getCurrentPrice.
+     * Два сценария:
+     * 1. Успешный ответ от московской биржи
+     * 2. В процессе работы приложения возникла ошибка
+     * Параметры для тестов берутся из аргументов параметров sourceParams
      */
     @ParameterizedTest
     @MethodSource("sourceParams")
-    fun <T> getCurrentPriceSuccessTest(param: ParametersData<T>) {
-        val getCurrentPriceUrl = "/v1/getCurrentPrice"
-        val moexMarketDataResponse = getMoexMarketDataResponse()
+    fun getCurrentPriceParamsTest(param: ParametersData) {
 
+        //ответ внешнего сервиса
+        val moexMarketDataResponse = getMoexMarketDataResponse()
         //мок для внешнего сервиса
         getWireMockStubGet(endpoints.moexCurrentPrice, moexMarketDataResponse, OK)
 
-        val requestEntity = RequestEntity<Any>(
-            getClassFromFile(param.pathToTickerRequest, TickerRequest::class.java),
-            HttpMethod.POST,
-            URI.create(baseUrl + getCurrentPriceUrl)
-        )
         //запуск интеграционного теста
-        val responseEntity = testRestTemplate.exchange(
-            requestEntity,
-            param.typeOfResponseClass
+        val responseEntity = testRestTemplate.postForEntity(
+            (baseUrl + getUrlEndpoint()),
+            getClassFromFile(param.pathToTickerRequest, TickerRequest::class.java),
+            param.typeOfResponse
         )
 
         //тесты с полученными данными
+
         assertEquals(param.httpStatus, responseEntity.statusCode)
         val appResponse = responseEntity.body as Any
         assertNotNull(appResponse)
@@ -93,23 +92,12 @@ class GetCurrentPriceTest : IntegrationBaseTest() {
     private fun getMoexMarketDataResponse() =
         getClassFromFile("classpath:controller/current/moexMarketDataResponse.json", MoexMarketDataResponse::class.java)
 
-    private fun getTickerRequest() =
-        getClassFromFile("classpath:controller/current/tickerRequest.json", TickerRequest::class.java)
-
-    private fun getFailTickerRequest() =
-        getClassFromFile("classpath:controller/current/failTickerRequest.json", TickerRequest::class.java)
-
     private fun <T> getClassFromFile(pathToFile: String, clas: Class<T>): T {
         val file = ResourceUtils.getFile(pathToFile)
         return objectMapper.readValue(file, clas)
     }
 
-    data class ParametersData<T>(
-        val pathToTickerRequest: String,
-        val httpStatus: HttpStatus,
-        val typeOfResponseClass: ParameterizedTypeReference<T>,
-        val pathToResponse: String
-    )
+    fun getUrlEndpoint() = ("/v1/getCurrentPrice")
 }
 
 inline fun <reified T> typeReference() = object : ParameterizedTypeReference<T>() {}

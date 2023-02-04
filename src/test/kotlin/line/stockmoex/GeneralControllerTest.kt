@@ -60,6 +60,6 @@ class GeneralControllerTest : IntegrationBaseTest() {
 /**
  * dto для readiness и liveness.
  */
-data class HealthStatus (
+data class HealthStatus(
     val status: String
 )

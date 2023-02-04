@@ -16,4 +16,6 @@ interface StatisticRequestRepository : JpaRepository<StatisticRequest, String> {
     @Timed(value = "metric3RecordToRepositoryStatistic")
     @Query(value = "SELECT * FROM statistic_request where date > current_date", nativeQuery = true)
     fun getStatistic(): List<StatisticRequest>
+
+    fun findBySecid(secid: String):List<StatisticRequest>
 }

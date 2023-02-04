@@ -3,9 +3,9 @@ package line.stockmoex.controller
 import io.micrometer.core.annotation.Timed
 import line.stockmoex.api.MoexApiController
 import line.stockmoex.entity.StatisticRequest
-import line.stockmoex.model.CurrentPriceResponse
-import line.stockmoex.model.LastDayPriceResponse
+import line.stockmoex.model.LastDayPriceInfoResponse
 import line.stockmoex.model.TickerRequest
+import line.stockmoex.model.current.CurrentPriceInfoResponse
 import line.stockmoex.repository.StatisticRequestRepository
 import line.stockmoex.service.StockService
 import org.springframework.web.bind.annotation.RequestBody
@@ -18,11 +18,11 @@ class MoexController(
 ) : MoexApiController {
 
     @Timed(value = "metric2CurrentPrice")
-    override fun getCurrentPrice(@RequestBody tickerRequest: TickerRequest): List<CurrentPriceResponse> {
+    override fun getCurrentPrice(@RequestBody tickerRequest: TickerRequest): CurrentPriceInfoResponse {
         return stockService.getCurrentPrice(tickerRequest)
     }
 
-    override fun getLastDayPrice(@RequestBody tickerRequest: TickerRequest): List<LastDayPriceResponse> {
+    override fun getLastDayPrice(@RequestBody tickerRequest: TickerRequest): LastDayPriceInfoResponse {
         return stockService.getLastDatPrice(tickerRequest)
     }
 

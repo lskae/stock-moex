@@ -1,0 +1,14 @@
+{
+  "lastDayPriceInfo": [
+    {
+      "SECID": "GAZP",
+      "SHORTNAME": "ГАЗПРОМ ао",
+      "PREVLEGALCLOSEPRICE": "158.49"
+    },
+    {
+      "SECID": "SBER",
+      "SHORTNAME": "Сбербанк",
+      "PREVLEGALCLOSEPRICE": "157.22"
+    }
+  ]
+}
