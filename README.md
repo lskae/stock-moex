@@ -7,6 +7,7 @@
 
 ## Используемое API
 Московская Биржа предоставляет инструменты для работы со своим API https://www.moex.com/a2193
+
 Описание параметров http://ftp.moex.com/pub/ClientsAPI/ASTS/Bridge_Interfaces/Equities/Equities44_Broker_Russian.ht
 ## Описание возможностей микросервиса
 Базовый URL к микросервису: http://localhost:8080/stock-moex-app-api/v1
