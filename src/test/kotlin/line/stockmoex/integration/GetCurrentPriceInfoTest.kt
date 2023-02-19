@@ -1,9 +1,9 @@
 package line.stockmoex.integration
 
 import line.stockmoex.IntegrationBaseTest
-import line.stockmoex.model.current.CurrentPriceInfoResponse
 import line.stockmoex.model.ErrorInfo
 import line.stockmoex.model.TickerRequest
+import line.stockmoex.model.current.CurrentPriceInfoResponse
 import line.stockmoex.model.moex.MoexMarketDataResponse
 import org.apache.commons.io.FileUtils
 import org.json.JSONObject
@@ -26,6 +26,9 @@ import java.util.stream.Stream
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class GetCurrentPriceInfoTest : IntegrationBaseTest() {
 
+    /**
+     * Параметры для теста sourceParams.
+     */
     fun sourceParams(): Stream<Arguments> {
         return Stream.of(
             Arguments.of(

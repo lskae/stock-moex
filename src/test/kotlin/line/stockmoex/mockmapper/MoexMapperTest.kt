@@ -29,7 +29,7 @@ class GetCurrentPriceInfoMapperTest {
     fun getCurrentPriceMapper() {
         val list = moexMapper
             .getMoexCurrentPrice(getMoexMarketDataResponse(), getTickerRequest())
-            .currentPriceInfoResponse
+            .listCurrentPriceInfo
         assertEquals(LAST, list.first { a -> a.secid == "GAZP" }.last)
     }
 

@@ -67,28 +67,29 @@ class IntegrationBaseTest {
     @Autowired
     lateinit var endpoints: EndpointProperties
 
-    //мок для get запросов
+    //мок для GET запросов
     fun getWireMockStubGet(
         testUrl: String,
         expectedResponse: Any,
         httpStatus: HttpStatus = OK,
         delayTime: Int = 0,
     ) {
-        val mappingBuilder = WireMock.get(WireMock.urlEqualTo(testUrl))
+        val mappingBuilder = WireMock.get(urlEqualTo(testUrl))
         return createWireMockStub(mappingBuilder, expectedResponse, httpStatus, delayTime)
     }
 
-    //мок для post запросов
+    //мок для POST запросов
     fun getWireMockStubPost(
         testUrl: String,
         expectedResponse: Any?,
         httpStatus: HttpStatus = OK,
         delayTime: Int = 0,
     ) {
-        val mappingBuilder = WireMock.post(WireMock.urlEqualTo(testUrl))
+        val mappingBuilder = WireMock.post(urlEqualTo(testUrl))
         return createWireMockStub(mappingBuilder, expectedResponse, httpStatus, delayTime)
     }
 
+    // Проверка состояния и кол-ва запросов
     fun assertWireMockRequest(url: String, obj: Any) {
         wireMockServer.verify(
             1, RequestPatternBuilder.newRequestPattern()
@@ -97,8 +98,9 @@ class IntegrationBaseTest {
         )
     }
 
+    // Проверка состояния и кол-ва запросов без объекта на вход
     fun assertWireMockRequestNoObject(url: String) {
-        wireMockServer.verify(1, getRequestedFor(urlEqualTo(url)));
+        wireMockServer.verify(1, getRequestedFor(urlEqualTo(url)))
     }
 
     //базовый конфиг мока

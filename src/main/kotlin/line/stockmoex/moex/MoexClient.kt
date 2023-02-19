@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.ResponseBody
 @FeignClient(name = "moex-client", url = "\${stock.endpoint.moexBase}", configuration = [MoexClientConfig::class])
 interface MoexClient {
 
+    /**
+     * Запрос к Московской бирже для получения информации по котировкам акций в режиме реального времени
+     */
     @GetMapping(path = ["\${stock.endpoint.moexCurrentPrice}"])
     @ResponseBody
     /*
@@ -19,7 +22,11 @@ interface MoexClient {
     @Timed(value = "metric1RequestToMoex") // время выполнения запроса к апи московской биржи
     fun getCurrentPrice(): MoexMarketDataResponse
 
-    @GetMapping(path = ["\${stock.endpoint.moexLastDayPrice}"])
+
+    /**
+     * Запрос к Московской бирже для получения информации по котировкам акций за предыдущий торговой день
+     */
+    @GetMapping(path = ["\${stock.endpoint.moexPreviousDayPrice}"])
     @ResponseBody
-    fun getLastDayPrice(): MoexSecuritiesResponse
+    fun getPreviousDayPrice(): MoexSecuritiesResponse
 }

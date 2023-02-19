@@ -8,6 +8,9 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.stereotype.Repository
 import java.time.ZonedDateTime
 
+/**
+ *  Репозиторий, созданный для тестов.
+ */
 @Repository
 interface StatisticRequestRepositoryTest : JpaRepository<StatisticRequest, String> {
 

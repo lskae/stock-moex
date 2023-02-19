@@ -1,8 +1,8 @@
 package line.stockmoex.mapper
 
 import line.stockmoex.exception.NotValidTickerRequestException
-import line.stockmoex.model.LastDayPriceInfo
-import line.stockmoex.model.LastDayPriceInfoResponse
+import line.stockmoex.model.PreviousDayPriceInfo
+import line.stockmoex.model.PreviousDayPriceInfoResponse
 import line.stockmoex.model.TickerRequest
 import line.stockmoex.model.current.CurrentPriceInfo
 import line.stockmoex.model.current.CurrentPriceInfoResponse
@@ -25,7 +25,7 @@ class MoexMapper {
             .filter { a -> a.any { it in tickerRequest.tickerList } }
         isRequestValid(listData)
         return CurrentPriceInfoResponse(
-            currentPriceInfoResponse = listData
+            listCurrentPriceInfo = listData
                 .map { v ->
                     CurrentPriceInfo(
                         secid = v[columns.indexOf("SECID")].toString(),
@@ -37,20 +37,20 @@ class MoexMapper {
     }
 
     /**
-     * Маппер для эндпоинта получения кэшированной информации
+     * Маппер для эндпоинта получения кэшированной информации по котировкам акций за предыдущий день
      */
-    fun getLastDatPrice(
+    fun getPreviousDayPrice(
         moexSecuritiesResponse: MoexSecuritiesResponse,
         tickerRequest: TickerRequest,
-    ): LastDayPriceInfoResponse {
+    ): PreviousDayPriceInfoResponse {
         val columns = moexSecuritiesResponse.securities.columns
         val listData = moexSecuritiesResponse.securities.data
             .filter { a -> a.any { it in tickerRequest.tickerList } }
         isRequestValid(listData)
-        return LastDayPriceInfoResponse(
-            lastDayPriceInfo = listData
+        return PreviousDayPriceInfoResponse(
+            previousDayPriceInfoList = listData
                 .map { v ->
-                    LastDayPriceInfo(
+                    PreviousDayPriceInfo(
                         secid = v[columns.indexOf("SECID")].toString(),
                         shortName = v[columns.indexOf("SHORTNAME")].toString(),
                         prevLegalClosePrice = v[columns.indexOf("PREVLEGALCLOSEPRICE")].toString()

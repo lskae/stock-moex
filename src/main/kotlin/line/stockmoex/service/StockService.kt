@@ -3,7 +3,7 @@ package line.stockmoex.service
 import io.micrometer.core.instrument.MeterRegistry
 import line.stockmoex.entity.StatisticRequest
 import line.stockmoex.mapper.MoexMapper
-import line.stockmoex.model.LastDayPriceInfoResponse
+import line.stockmoex.model.PreviousDayPriceInfoResponse
 import line.stockmoex.model.TickerRequest
 import line.stockmoex.model.current.CurrentPriceInfo
 import line.stockmoex.model.current.CurrentPriceInfoResponse
@@ -24,7 +24,7 @@ class StockService(
     private var value: AtomicInteger = AtomicInteger()
 
     /**
-     * Инициализация кастомная метрика для максимальной цены
+     * Инициализация кастомной метрики для максимальной цены
      */
     init {
         meterRegistry.gauge("metricCustomMaxPrice", value)
@@ -37,10 +37,10 @@ class StockService(
         /**
          * Подсчет значения для кастомной метрики для максимальной цены по определенному тикеру
          */
-        getCustomMetricForMaxValue(currentInfoResponse.currentPriceInfoResponse)
+        getCustomMetricForMaxValue(currentInfoResponse.listCurrentPriceInfo)
 
         // Сохранение статистики для прометеуса
-        val listStatisticRequest = currentInfoResponse.currentPriceInfoResponse
+        val listStatisticRequest = currentInfoResponse.listCurrentPriceInfo
             .map { a -> getStatisticRequest(a) }
         statisticRequestRepository.saveAll(listStatisticRequest)
 
@@ -48,12 +48,13 @@ class StockService(
     }
 
     /**
-     * Использование кэша
+     * Использование кэша, т.к. информация за предыдущий торговый день не обновляется регулярно,
+     * поэтому нет необходимости нагружать микросервис запросами, которые будут лезть во внешний сервис
      */
     @Cacheable(value = ["stable"])
-    fun getLastDatPrice(tickerRequest: TickerRequest): LastDayPriceInfoResponse {
-        val moexResponse = moexClient.getLastDayPrice()
-        return moexMapper.getLastDatPrice(moexResponse, tickerRequest)
+    fun getPreviousDayPrice(tickerRequest: TickerRequest): PreviousDayPriceInfoResponse {
+        val moexResponse = moexClient.getPreviousDayPrice()
+        return moexMapper.getPreviousDayPrice(moexResponse, tickerRequest)
     }
 
     fun getStatisticRequest(currentPriceInfo: CurrentPriceInfo): StatisticRequest {

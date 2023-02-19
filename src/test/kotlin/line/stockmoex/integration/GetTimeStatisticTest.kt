@@ -38,7 +38,7 @@ class GetTimeStatisticTest : IntegrationBaseTest() {
             object : ParameterizedTypeReference<List<StatisticRequest>>() {})
         assertEquals(HttpStatus.OK, response.statusCode)
         statisticRequestRepositoryTest.saveAll(generateEntities())
-        println("ddd" + statisticRequestRepositoryTest.findAll().get(0).date)
+        println("ddd" + statisticRequestRepositoryTest.findAll()[0].date)
         statisticRequestRepositoryTest.updateDate(changeDate())
         assertEquals(2, statisticRequestRepositoryTest.getStatistic().size)
     }

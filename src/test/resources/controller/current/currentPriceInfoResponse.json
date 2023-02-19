@@ -1,5 +1,5 @@
 {
-  "currentInfoResponse": [
+  "listCurrentPriceInfo": [
     {
       "SECID": "GAZP",
       "LAST": "161.23",

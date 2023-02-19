@@ -3,7 +3,7 @@ package line.stockmoex.controller
 import io.micrometer.core.annotation.Timed
 import line.stockmoex.api.MoexApiController
 import line.stockmoex.entity.StatisticRequest
-import line.stockmoex.model.LastDayPriceInfoResponse
+import line.stockmoex.model.PreviousDayPriceInfoResponse
 import line.stockmoex.model.TickerRequest
 import line.stockmoex.model.current.CurrentPriceInfoResponse
 import line.stockmoex.repository.StatisticRequestRepository
@@ -22,8 +22,8 @@ class MoexController(
         return stockService.getCurrentPrice(tickerRequest)
     }
 
-    override fun getLastDayPrice(@RequestBody tickerRequest: TickerRequest): LastDayPriceInfoResponse {
-        return stockService.getLastDatPrice(tickerRequest)
+    override fun getPreviousDayPrice(@RequestBody tickerRequest: TickerRequest): PreviousDayPriceInfoResponse {
+        return stockService.getPreviousDayPrice(tickerRequest)
     }
 
     override fun getTimeStatistic(): List<StatisticRequest> {

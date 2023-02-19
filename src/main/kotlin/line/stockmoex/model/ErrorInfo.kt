@@ -5,9 +5,15 @@ import io.swagger.v3.oas.annotations.media.Schema
 @Schema(name = "Error", description = "Информация об ошибке")
 data class ErrorInfo(
 
+    /**
+     * Код ошибки
+     */
     @field:Schema(description = "Код ошибки", required = true, example = "1")
     val code: String,
 
+    /**
+     * Текст ошибки
+     */
     @field:Schema(description = "Сообщение об ошибке", example = "Что-то пошло не так", required = true)
     val message: String,
 )

@@ -11,7 +11,7 @@ tags:
 - name: stock-moex-v1
   description: Адаптер для работы с API Московской биржи
 paths:
-  /v1/getLastDayPrice:
+  /v1/getPreviousDayPrice:
     post:
       tags:
       - stock-moex-v1
@@ -19,7 +19,7 @@ paths:
         день
       description: "Получение кэшированной информации по котировкам акций за преды\
         дущий день, параметр SECURITIES"
-      operationId: getLastDayPrice
+      operationId: getPreviousDayPrice
       parameters:
       - name: RqUID
         in: header
@@ -37,8 +37,8 @@ paths:
               $ref: '#/components/schemas/TickerRequest'
         required: true
       responses:
-        "400":
-          description: Bad Request
+        "200":
+          description: OK
           headers:
             RqUID:
               description: Уникальный идентификатор запроса. Используется для сквозной
@@ -51,7 +51,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/PreviousDayPriceInfoResponse'
         "500":
           description: Internal Server Error
           headers:
@@ -67,8 +67,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-        "200":
-          description: OK
+        "400":
+          description: Bad Request
           headers:
             RqUID:
               description: Уникальный идентификатор запроса. Используется для сквозной
@@ -81,7 +81,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/LastDayPriceInfoResponse'
+                $ref: '#/components/schemas/Error'
   /v1/getCurrentPrice:
     post:
       tags:
@@ -107,36 +107,6 @@ paths:
               $ref: '#/components/schemas/TickerRequest'
         required: true
       responses:
-        "400":
-          description: Bad Request
-          headers:
-            RqUID:
-              description: Уникальный идентификатор запроса. Используется для сквозной
-                трассировки запросов. Способ генерации - UUID
-              required: true
-              style: simple
-              schema:
-                type: string
-                example: b788d7ea-d511-11ec-9d64-0242ac120002
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        "500":
-          description: Internal Server Error
-          headers:
-            RqUID:
-              description: Уникальный идентификатор запроса. Используется для сквозной
-                трассировки запросов. Способ генерации - UUID
-              required: true
-              style: simple
-              schema:
-                type: string
-                example: b788d7ea-d511-11ec-9d64-0242ac120002
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
         "200":
           description: OK
           headers:
@@ -152,6 +122,36 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CurrentPriceInfoResponse'
+        "500":
+          description: Internal Server Error
+          headers:
+            RqUID:
+              description: Уникальный идентификатор запроса. Используется для сквозной
+                трассировки запросов. Способ генерации - UUID
+              required: true
+              style: simple
+              schema:
+                type: string
+                example: b788d7ea-d511-11ec-9d64-0242ac120002
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "400":
+          description: Bad Request
+          headers:
+            RqUID:
+              description: Уникальный идентификатор запроса. Используется для сквозной
+                трассировки запросов. Способ генерации - UUID
+              required: true
+              style: simple
+              schema:
+                type: string
+                example: b788d7ea-d511-11ec-9d64-0242ac120002
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /v1/getTimeStatistic:
     get:
       tags:
@@ -170,36 +170,6 @@ paths:
           type: string
           example: b788d7ea-d511-11ec-9d64-0242ac120002
       responses:
-        "400":
-          description: Bad Request
-          headers:
-            RqUID:
-              description: Уникальный идентификатор запроса. Используется для сквозной
-                трассировки запросов. Способ генерации - UUID
-              required: true
-              style: simple
-              schema:
-                type: string
-                example: b788d7ea-d511-11ec-9d64-0242ac120002
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        "500":
-          description: Internal Server Error
-          headers:
-            RqUID:
-              description: Уникальный идентификатор запроса. Используется для сквозной
-                трассировки запросов. Способ генерации - UUID
-              required: true
-              style: simple
-              schema:
-                type: string
-                example: b788d7ea-d511-11ec-9d64-0242ac120002
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
         "200":
           description: OK
           headers:
@@ -217,6 +187,36 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/StatisticRequest'
+        "500":
+          description: Internal Server Error
+          headers:
+            RqUID:
+              description: Уникальный идентификатор запроса. Используется для сквозной
+                трассировки запросов. Способ генерации - UUID
+              required: true
+              style: simple
+              schema:
+                type: string
+                example: b788d7ea-d511-11ec-9d64-0242ac120002
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "400":
+          description: Bad Request
+          headers:
+            RqUID:
+              description: Уникальный идентификатор запроса. Используется для сквозной
+                трассировки запросов. Способ генерации - UUID
+              required: true
+              style: simple
+              schema:
+                type: string
+                example: b788d7ea-d511-11ec-9d64-0242ac120002
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 components:
   schemas:
     TickerRequest:
@@ -246,7 +246,7 @@ components:
           description: Сообщение об ошибке
           example: Что-то пошло не так
       description: Информация об ошибке
-    LastDayPriceInfo:
+    PreviousDayPriceInfo:
       type: object
       properties:
         SECID:
@@ -270,17 +270,16 @@ components:
           type: string
           description: Цена закрытия предыдущего торгового дня
           example: 156.4
-      description: Ответ на запрос о получении кэшированной информации по котировкам
-        акций за предыдущий день
-    LastDayPriceInfoResponse:
+      description: Информация по котировкам акций за предыдущий день
+    PreviousDayPriceInfoResponse:
       type: object
       properties:
-        lastDayPriceInfo:
+        previousDayPriceInfoList:
           type: array
-          description: Лист LastDayPriceInfo
+          description: Лист PreviousDayPriceInfo
           items:
-            $ref: '#/components/schemas/LastDayPriceInfo'
-      description: Лист LastDayPriceInfoResponse
+            $ref: '#/components/schemas/PreviousDayPriceInfo'
+      description: Контейнер для листа объектов PreviousDayPriceInfo
     CurrentPriceInfo:
       type: object
       properties:
@@ -306,28 +305,22 @@ components:
           example: 200.2
         low:
           type: string
-          description: Низшая цена за текущий торговый день
+          description: Наименьшая цена за текущий торговый день
           example: 199.2
         high:
           type: string
-          description: Высокая цена за текущий торговый день
+          description: Наибольшая цена за текущий торговый день
           example: 202.2
-      description: Объект ответа на запрос о получении информации по котировкам акций
-        в режиме реального времени
+      description: Информация по котировкам акций в режиме реального времени
     CurrentPriceInfoResponse:
       type: object
       properties:
-        currentInfoResponse:
+        listCurrentPriceInfo:
           type: array
-          writeOnly: true
+          description: Лист объектов CurrentPriceInfo
           items:
             $ref: '#/components/schemas/CurrentPriceInfo'
-        currentPriceInfoResponse:
-          type: array
-          description: Лист CurrentPriceInfo
-          items:
-            $ref: '#/components/schemas/CurrentPriceInfo'
-      description: Лист CurrentPriceInfo
+      description: Контейнер для листа объектов CurrentPriceInfo
     StatisticRequest:
       type: object
       properties:

@@ -37,10 +37,10 @@ stock:
   endpoint:
     adapterBase: /v1
     getCurrentPrice: /getCurrentPrice
-    getLastDayPrice: /getLastDayPrice
+    getPreviousDayPrice: /getPreviousDayPrice
     moexBase: https://iss.moex.com/iss
     moexCurrentPrice: /engines/stock/markets/shares/boards/TQBR/securities.json?iss.meta=off&iss.only=marketdata
-    moexLastDayPrice: /engines/stock/markets/shares/boards/TQBR/securities.json?iss.meta=off&iss.only=securities
+    moexPreviousDayPrice: /engines/stock/markets/shares/boards/TQBR/securities.json?iss.meta=off&iss.only=securities
     getTimeStatistic: /getTimeStatistic
 logging:
   level:

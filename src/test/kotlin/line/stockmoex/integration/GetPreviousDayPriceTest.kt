@@ -2,7 +2,7 @@ package line.stockmoex.integration
 
 import line.stockmoex.IntegrationBaseTest
 import line.stockmoex.model.ErrorInfo
-import line.stockmoex.model.LastDayPriceInfoResponse
+import line.stockmoex.model.PreviousDayPriceInfoResponse
 import line.stockmoex.model.TickerRequest
 import line.stockmoex.model.moex.MoexSecuritiesResponse
 import org.apache.commons.io.FileUtils
@@ -20,19 +20,22 @@ import org.springframework.util.ResourceUtils
 import java.util.stream.Stream
 
 /**
- * Интеграционный тест эндпоинта getLastDayPrice
+ * Интеграционный тест эндпоинта getPreviousDayPrice
  */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class GetLastDayPriceTest : IntegrationBaseTest() {
+class GetPreviousDayPriceTest : IntegrationBaseTest() {
 
+    /**
+     * Параметры для теста sourceParams.
+     */
     fun sourceParams(): Stream<Arguments> {
         return Stream.of(
             Arguments.of(
                 ParametersData(
                     pathToTickerRequest = "classpath:controller/tickerRequest.json",
                     httpStatus = OK,
-                    typeOfResponse = LastDayPriceInfoResponse::class.java,
-                    pathToResponse = "classpath:controller/lastDay/lastDayInfoResponse.json"
+                    typeOfResponse = PreviousDayPriceInfoResponse::class.java,
+                    pathToResponse = "classpath:controller/previousDay/previousDayInfoResponse.json"
                 )
             ),
             Arguments.of(
@@ -47,7 +50,7 @@ class GetLastDayPriceTest : IntegrationBaseTest() {
     }
 
     /**
-     * Интеграционный тест эндпоинта getLastDayPrice.
+     * Интеграционный тест эндпоинта getPreviousDayPrice.
      * Два сценария:
      * 1. Успешный ответ от московской биржи
      * 2. В процессе работы приложения возникла ошибка
@@ -55,12 +58,12 @@ class GetLastDayPriceTest : IntegrationBaseTest() {
      */
     @ParameterizedTest
     @MethodSource("sourceParams")
-    fun getLastDayPriceParamsTest(param: ParametersData) {
+    fun getPreviousDayPriceParamsTest(param: ParametersData) {
 
         //ответ внешнего сервиса
         val moexSecuritiesResponse = getMoexSecuritiesResponse()
         //мок для внешнего сервиса
-        getWireMockStubGet(endpoints.moexLastDayPrice, moexSecuritiesResponse, OK)
+        getWireMockStubGet(endpoints.moexPreviousDayPrice, moexSecuritiesResponse, OK)
 
         //запуск интеграционного теста
         val responseEntity = testRestTemplate.postForEntity(
@@ -80,7 +83,7 @@ class GetLastDayPriceTest : IntegrationBaseTest() {
         JSONAssert.assertEquals(expected, actual, true)
 
         //проверяем состояние и количество реквестов к мосбирже,
-        assertWireMockRequestNoObject(endpoints.moexLastDayPrice)
+        assertWireMockRequestNoObject(endpoints.moexPreviousDayPrice)
     }
 
     private fun getExpectedResponse(pathToResponse: String): JSONObject {
@@ -89,12 +92,15 @@ class GetLastDayPriceTest : IntegrationBaseTest() {
     }
 
     private fun getMoexSecuritiesResponse() =
-        getClassFromFile("classpath:controller/lastDay/moexSecuritiesResponse.json", MoexSecuritiesResponse::class.java)
+        getClassFromFile(
+            "classpath:controller/previousDay/moexSecuritiesResponse.json",
+            MoexSecuritiesResponse::class.java
+        )
 
     private fun <T> getClassFromFile(pathToFile: String, clas: Class<T>): T {
         val file = ResourceUtils.getFile(pathToFile)
         return objectMapper.readValue(file, clas)
     }
 
-    fun getUrlEndpoint() = ("/v1/getLastDayPrice")
+    fun getUrlEndpoint() = ("/v1/getPreviousDayPrice")
 }

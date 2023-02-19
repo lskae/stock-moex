@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.info.Info
 import io.swagger.v3.oas.annotations.tags.Tag
 import line.stockmoex.entity.StatisticRequest
-import line.stockmoex.model.LastDayPriceInfoResponse
+import line.stockmoex.model.PreviousDayPriceInfoResponse
 import line.stockmoex.model.TickerRequest
 import line.stockmoex.model.current.CurrentPriceInfoResponse
 import org.springframework.http.MediaType
@@ -42,7 +42,7 @@ interface MoexApiController {
     @ResponsesAndHeader
     fun getCurrentPrice(@RequestBody tickerRequest: TickerRequest): CurrentPriceInfoResponse
 
-    @PostMapping(path = ["\${stock.endpoint.getLastDayPrice}"])
+    @PostMapping(path = ["\${stock.endpoint.getPreviousDayPrice}"])
     @ResponseBody
     @Operation(
         summary = "Получение кэшированной информации по котировкам акций за предыдущий день",
@@ -50,7 +50,7 @@ interface MoexApiController {
         requestBody = RequestBodySwagger(description = "Лист тикеров акций по которым необходимо получить информацию")
     )
     @ResponsesAndHeader
-    fun getLastDayPrice(@RequestBody tickerRequest: TickerRequest): LastDayPriceInfoResponse
+    fun getPreviousDayPrice(@RequestBody tickerRequest: TickerRequest): PreviousDayPriceInfoResponse
 
     @GetMapping(path = ["\${stock.endpoint.getTimeStatistic}"])
     @ResponseBody
