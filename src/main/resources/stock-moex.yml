@@ -37,21 +37,6 @@ paths:
               $ref: '#/components/schemas/TickerRequest'
         required: true
       responses:
-        "200":
-          description: OK
-          headers:
-            RqUID:
-              description: Уникальный идентификатор запроса. Используется для сквозной
-                трассировки запросов. Способ генерации - UUID
-              required: true
-              style: simple
-              schema:
-                type: string
-                example: b788d7ea-d511-11ec-9d64-0242ac120002
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PreviousDayPriceInfoResponse'
         "500":
           description: Internal Server Error
           headers:
@@ -82,6 +67,21 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+        "200":
+          description: OK
+          headers:
+            RqUID:
+              description: Уникальный идентификатор запроса. Используется для сквозной
+                трассировки запросов. Способ генерации - UUID
+              required: true
+              style: simple
+              schema:
+                type: string
+                example: b788d7ea-d511-11ec-9d64-0242ac120002
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PreviousDayPriceInfoResponse'
   /v1/getCurrentPrice:
     post:
       tags:
@@ -107,21 +107,6 @@ paths:
               $ref: '#/components/schemas/TickerRequest'
         required: true
       responses:
-        "200":
-          description: OK
-          headers:
-            RqUID:
-              description: Уникальный идентификатор запроса. Используется для сквозной
-                трассировки запросов. Способ генерации - UUID
-              required: true
-              style: simple
-              schema:
-                type: string
-                example: b788d7ea-d511-11ec-9d64-0242ac120002
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CurrentPriceInfoResponse'
         "500":
           description: Internal Server Error
           headers:
@@ -152,6 +137,21 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+        "200":
+          description: OK
+          headers:
+            RqUID:
+              description: Уникальный идентификатор запроса. Используется для сквозной
+                трассировки запросов. Способ генерации - UUID
+              required: true
+              style: simple
+              schema:
+                type: string
+                example: b788d7ea-d511-11ec-9d64-0242ac120002
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CurrentPriceInfoResponse'
   /v1/getTimeStatistic:
     get:
       tags:
@@ -170,23 +170,6 @@ paths:
           type: string
           example: b788d7ea-d511-11ec-9d64-0242ac120002
       responses:
-        "200":
-          description: OK
-          headers:
-            RqUID:
-              description: Уникальный идентификатор запроса. Используется для сквозной
-                трассировки запросов. Способ генерации - UUID
-              required: true
-              style: simple
-              schema:
-                type: string
-                example: b788d7ea-d511-11ec-9d64-0242ac120002
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/StatisticRequest'
         "500":
           description: Internal Server Error
           headers:
@@ -217,6 +200,23 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+        "200":
+          description: OK
+          headers:
+            RqUID:
+              description: Уникальный идентификатор запроса. Используется для сквозной
+                трассировки запросов. Способ генерации - UUID
+              required: true
+              style: simple
+              schema:
+                type: string
+                example: b788d7ea-d511-11ec-9d64-0242ac120002
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StatisticRequest'
 components:
   schemas:
     TickerRequest:

@@ -33,7 +33,9 @@
 - Тестирование осуществляется с помощью **интеграционных** тестов src/test/kotlin/line/stockmoex/integration с поднятием контекста на основе  testResttemplae и **юнит** тестов src/test/kotlin/line/stockmoex/mockmapper/MoexMapperTest.kt.
   **Интеграционные** тесты используют **WireMock** для создания заглушек для внешних сервисов **fun createWireMockStub** в src/test/kotlin/line/stockmoex/IntegrationBaseTest.kt.
 - Для интеграционных тестов используются **параметризованные тесты** для оптимизации кода и сокращения его объема **fun sourceParams(): Stream<Arguments>**
+- Плагин для тестов **jacoco** присутствует
 - Чтение json файлов, с помощью **objectMapper**
+- Плагин для "чистого" кода **Detekt**
 
 
 ## Docker
