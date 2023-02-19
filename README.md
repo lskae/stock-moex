@@ -32,7 +32,8 @@
 - **Кастомные аннотации** для объединения типовых Swagger аннотаций в src/main/kotlin/line/stockmoex/api/ResponsesAndHeader.kt
 - Генерация **openapi** документа **src/main/resources/stock-moex.yml** по **swagger** аннотациям в тесте **fun openApiDocGeneration()** в src/test/kotlin/line/stockmoex/GeneralControllerTest.kt
 - Перехват ошибок от внешних сервисов и ошибок возникающих в процессе работы приложения осуществляет **RestControllerAdvice** на основе объекта src/main/kotlin/line/stockmoex/model/ErrorInfo.kt
-- Тестирование осуществляется с помощью **интеграционных** тестов src/test/kotlin/line/stockmoex/integration с поднятием контекста на основе  testResttemplae и **юнит** тестов src/test/kotlin/line/stockmoex/mockmapper/MoexMapperTest.kt.
+- Тестирование осуществляется с помощью **интеграционных** тестов src/test/kotlin/line/stockmoex/integration с поднятием контекста на основе  testRestTemplate и **юнит** тестов src/test/kotlin/line/stockmoex/mockmapper/MoexMapperTest.kt.
+
   **Интеграционные** тесты используют **WireMock** для создания заглушек для внешних сервисов **fun createWireMockStub** в src/test/kotlin/line/stockmoex/IntegrationBaseTest.kt.
 - Для интеграционных тестов используются **параметризованные тесты** для оптимизации кода и сокращения его объема **fun sourceParams(): Stream<Arguments>**
 - Плагин для тестов **jacoco** присутствует
